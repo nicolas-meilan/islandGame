@@ -5,12 +5,12 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 
-#include "ActorWithTrackingArrow.h"
+#include "ComponentWithTrackingArrow.h"
 
 #include "islandGameCharacter.generated.h"
 
 UCLASS(config=Game)
-class AislandGameCharacter : public ACharacter, public IActorWithTrackingArrow
+class AislandGameCharacter : public ACharacter, public IComponentWithTrackingArrow
 {
 	GENERATED_BODY()
 

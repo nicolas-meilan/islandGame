@@ -36,13 +36,5 @@ private:
 	UPROPERTY(EditAnywhere)
 	UClass* ActorClassToBeAttached;
 
-
 	AActor* ActorToBeAttached;
-
-	UPROPERTY(EditAnywhere)
-	float deltaAttachX = 0.f;
-	UPROPERTY(EditAnywhere)
-	float deltaAttachY = 0.f;
-	UPROPERTY(EditAnywhere)
-	float deltaAttachZ = 0.f;
 };

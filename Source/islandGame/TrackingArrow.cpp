@@ -3,7 +3,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
-#include "ActorWithTrackingArrow.h"
+#include "ComponentWithTrackingArrow.h"
 
 ATrackingArrow::ATrackingArrow() {
 	PrimaryActorTick.bCanEverTick = true;
@@ -38,14 +38,14 @@ void ATrackingArrow::Tick(float DeltaTime) {
 
 AActor* ATrackingArrow::getClosestTrackActor() {
 	TArray<AActor*> actorsToTrack;
-	if (ActorClassToTracking) {
+	if (ActorClassToTracking != NULL) {
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ActorClassToTracking, actorsToTrack);
 	}
 
 	if (!actorsToTrack.Num()) return nullptr;
 
 	AActor* closestActor = actorsToTrack[0];
-	float closestActorDistance = 0.f;
+	float closestActorDistance = INFINITY;
 	for (AActor* currentActor : actorsToTrack) {
 		float distanceToActor = (GetActorLocation() - currentActor->GetActorLocation()).Size();
 		if (closestActorDistance > distanceToActor) {
@@ -68,19 +68,14 @@ FRotator ATrackingArrow::getRotationToActor(AActor* actor) {
 void ATrackingArrow::attachToActor() {
 	if (ActorClassToBeAttached == NULL || ActorToBeAttached) return;
 
-	ActorToBeAttached = UGameplayStatics::GetActorOfClass(GetWorld(), ActorClassToBeAttached);
-	if (!ActorToBeAttached) return;
+		ActorToBeAttached = UGameplayStatics::GetActorOfClass(GetWorld(), ActorClassToBeAttached);
+		if (!ActorToBeAttached) return;
 
 	FRotator currentRotation = GetActorRotation();
 	FVector currentScale = GetActorScale3D();
 
-	AttachToComponent(Cast<IActorWithTrackingArrow>(ActorToBeAttached)->getTrackingArrowComponent(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("TrackingArrow"));
+	AttachToComponent(Cast<IComponentWithTrackingArrow>(ActorToBeAttached)->getTrackingArrowComponent(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("TrackingArrow"));
 	
 	SetActorRotation(currentRotation);
 	SetActorScale3D(currentScale);
-
-	FVector newLocation = GetActorLocation();
-	newLocation.X += deltaAttachX;
-	newLocation.Y += deltaAttachY;
-	newLocation.Z += deltaAttachZ;
 }

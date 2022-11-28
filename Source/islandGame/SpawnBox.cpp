@@ -41,8 +41,10 @@ bool ASpawnBox::spawnActor() {
 
 		int numberOfActors = ActorsClassToBeSpawned.Num();
 		int indexOfActorToRender = FMath::RandRange(0, numberOfActors - 1);
-
-		spawned = GetWorld()->SpawnActor(ActorsClassToBeSpawned[indexOfActorToRender], &spawnLocation) != nullptr;
+		TSubclassOf<AActor> currentActorToSpawn = ActorsClassToBeSpawned[indexOfActorToRender];
+		if (currentActorToSpawn != NULL) {
+			spawned = GetWorld()->SpawnActor(ActorsClassToBeSpawned[indexOfActorToRender], &spawnLocation) != nullptr;
+		}
 	}
 	return spawned;
 }
